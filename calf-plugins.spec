@@ -1,18 +1,19 @@
+%define		pre pre1
 Summary:	Calf Studio Gear
 Name:		calf-plugins
-Version:	0.0.19
-Release:	2
+Version:	0.0.60
+Release:	0.%{pre}.1
 License:	GPL v2/LGPL
 Group:		X11/Applications
-Source0:	http://downloads.sourceforge.net/calf/calf-%{version}.tar.gz
-# Source0-md5:	9570cb742522218a11b2dbefdb3aabc9
+Source0:	http://downloads.sourceforge.net/calf/calf-%{version}%{pre}.tar.gz
+# Source0-md5:	d427de86366d5e31640ac9d01a326f9d
 URL:		http://calf.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	fftw3-single-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	jack-audio-connection-kit-devel
-BuildRequires:	lash-devel
+#BuildRequires:	lash-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	lv2-devel
@@ -29,7 +30,7 @@ and mastering effects), instruments (SF2 player, organ simulator and
 a monophonic synthesizer) and tools (analyzer, mono/stereo tools).
 
 %prep
-%setup -qn calf-%{version}
+%setup -qn calf-%{version}%{pre}
 
 %build
 %{__libtoolize}
@@ -40,6 +41,7 @@ a monophonic synthesizer) and tools (analyzer, mono/stereo tools).
 %configure \
 	--disable-static	\
 	--enable-sse		\
+	--without-lash		\
 	--with-lv2-dir="%{_libdir}/lv2"
 %{__make}
 
@@ -50,6 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/doc/calf
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/calf/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
